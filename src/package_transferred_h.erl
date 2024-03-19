@@ -9,7 +9,7 @@
 init(Req0, Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{location_id := Location_id, package_id := Package_id} = jsx:decode(Data),
-	Result = erpc:call(?SERVER, ?LOGIC, transfer_package, [{Package_id, Location_id}]),
+	Result = erpc:cast(?SERVER, ?LOGIC, transfer_package_api, [{Package_id, Location_id}]),
 	        
 	Encoded_message = jsx:encode(Result),
 	Response = cowboy_req:reply(200, #{
