@@ -28,7 +28,7 @@ start(_Type, _Args) ->
 						{certfile, PrivDir ++ "/ssl/fullchain.pem"},
 						{keyfile, PrivDir ++ "/ssl/privkey.pem"}
               			], #{env => #{dispatch => Dispatch}}),
-	db_access_sup:start_link().
+	server_droplet_sup:start_link().
 
 stop(_State) ->
     ok.
