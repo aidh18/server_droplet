@@ -34,7 +34,7 @@ init([])->
     %% These children may be more supervisors, gen_servers,
     %% finite state machines (FSM), or other standard or custom
     %% OTP elements.
-    ChildSpecList = [child(request_sup,supervisor)],
+    ChildSpecList = [],
     {ok, {SupFlags, ChildSpecList}}.
 %% internal functions
 %%
