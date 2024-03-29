@@ -8,8 +8,8 @@
 
 init(Req0, Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
-	Package_id = jsx:decode(Data),
-	Result = erpc:call(?SERVER, ?LOGIC, request_location_api, [binary_to_list(Package_id)]),
+	Package_id = binary_to_list(Data),
+	Result = erpc:call(?SERVER, ?LOGIC, request_location_api, [Package_id]),
 
 	Encoded_message = jsx:encode(Result),
 	Response = cowboy_req:reply(200, #{
