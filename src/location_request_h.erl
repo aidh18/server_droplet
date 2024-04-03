@@ -9,11 +9,22 @@
 init(Req0, Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	Package_id = binary_to_list(Data),
-	{Lat,Long} = erpc:call(?SERVER, ?LOGIC, request_location_api, [Package_id]),
+	Result = erpc:call(?SERVER, ?LOGIC, request_location_api, [Package_id]),
 
-	Json = #{<<"lat">>=> Lat, <<"long">>=> Long},
-	Encoded_message = jsx:encode(Json),
-	Response = cowboy_req:reply(200, #{
-		<<"content-type">> => <<"text/json">>
-	}, Encoded_message, Req0),
-	{ok, Response, Opts}.
+	if
+		is_tuple(Result)->
+			{Lat,Long} = Result,
+			Json = #{<<"lat">>=> Lat, <<"long">>=> Long},
+			Encoded_message = jsx:encode(Json),
+			Response = cowboy_req:reply(200, #{
+				<<"content-type">> => <<"text/json">>
+			}, Encoded_message, Req0),
+			{ok, Response, Opts};
+		true->
+			Response = cowboy_req:reply(200, #{
+				<<"content-type">> => <<"text/json">>
+			}, list_to_binary(Result), Req0),
+			{ok, Response, Opts}
+	end.
+
+
