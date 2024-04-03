@@ -9,9 +9,10 @@
 init(Req0, Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	Package_id = binary_to_list(Data),
-	Result = erpc:call(?SERVER, ?LOGIC, request_location_api, [Package_id]),
+	{Lat,Long} = erpc:call(?SERVER, ?LOGIC, request_location_api, [Package_id]),
 
-	Encoded_message = jsx:encode(Result),
+	Json = #{<<"lat">>=> Lat, <<"long">>=> Long},
+	Encoded_message = jsx:encode(Json),
 	Response = cowboy_req:reply(200, #{
 		<<"content-type">> => <<"text/json">>
 	}, Encoded_message, Req0),
