@@ -20,6 +20,11 @@ init(Req0, Opts) ->
 				<<"content-type">> => <<"text/json">>
 			}, Encoded_message, Req0),
 			{ok, Response, Opts};
+		Result =:= 500->
+			Response = cowboy_req:reply(200, #{
+				<<"content-type">> => <<"text/json">>
+			}, list_to_binary("500"), Req0),
+			{ok, Response, Opts};
 		true->
 			Response = cowboy_req:reply(200, #{
 				<<"content-type">> => <<"text/json">>
