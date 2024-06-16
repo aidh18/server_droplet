@@ -8,8 +8,8 @@
 
 init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
-	#{<<"username">> := Username,<<"password">> := Password} = jsx:decode(Data),
-	Result = erpc:cast(?SERVER,?LOGIC,request_login_api,[{binary_to_list(Username),binary_to_list(Password)}]),
+	#{<<"user_id">> := User_id,<<"username">> := Username,<<"password">> := Password} = jsx:decode(Data),
+	Result = erpc:cast(?SERVER,?LOGIC,request_login_api,[{binary_to_list(User_id),binary_to_list(Username),binary_to_list(Password)}]),
 
 	if
 		Result =:= success->
