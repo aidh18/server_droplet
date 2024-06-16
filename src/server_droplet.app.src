@@ -1,16 +1,16 @@
-{application, server_droplet,
- [{description, "An OTP application"},
-  {vsn, "0.1.0"},
-  {registered, []},
-  {mod, {server_droplet_app, []}},
+{application,server_droplet,
+ [{description,"An OTP application"},
+  {vsn,"0.1.0"},
+  {registered,[]},
+  {mod,{server_droplet_app,[]}},
   {applications,
    [kernel,
     stdlib,
     cowboy
    ]},
   {env,[]},
-  {modules, []},
+  {modules,[]},
 
-  {licenses, ["Apache 2.0"]},
-  {links, []}
+  {licenses,["Apache 2.0"]},
+  {links,[]}
  ]}.
