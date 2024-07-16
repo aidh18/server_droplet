@@ -14,10 +14,15 @@ start(_Type,_Args) ->
 	    {'_',[
 		%{"/",cowboy_static,{priv_file,db_access,"static/index.html"}},
 			{"/",toppage_h,[]},
+			{"/employees_add",employees_add_h,[]},
 			{"/hours_request",hours_request_h,[]},
 			{"/hours_update",hours_update_h,[]},
 			{"/login_request",login_request_h,[]},
-			{"/login_update",login_update_h,[]}
+			{"/login_update",login_update_h,[]},
+			{"/name_request",name_request_h,[]},
+			{"/name_update",name_update_h,[]},
+			{"/settings_request",settings_request_h,[]},
+			{"/settings_update",settings_update_h,[]}
 	    ]}
 	]),
 

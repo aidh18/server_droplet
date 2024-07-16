@@ -16,11 +16,3 @@ init(Req0,Opts) ->
 		<<"content-type">> => <<"text/json">>
 	},Encoded_message,Req0),
 	{ok,Response,Opts}.
-
-
-
-
-
-
-
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
