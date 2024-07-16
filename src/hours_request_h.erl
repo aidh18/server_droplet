@@ -8,11 +8,11 @@
 
 init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
-	User_id = binary_to_list(Data),
-	Result = erpc:cast(?SERVER,?LOGIC,request_hours_api,[binary_to_list(User_id)]),
+	#{<<"is_employer">> := Is_employer,<<"user_id">> := User_id} = jsx:decode(Data),
+	Result = erpc:call(?SERVER,?LOGIC,request_hours_api,[Is_employer,binary_to_list(User_id)]),
 
 	if
-		is_map(Result)->
+		is_list(Result) orelse is_map(Result)->
 			Encoded_message = jsx:encode(Result),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>

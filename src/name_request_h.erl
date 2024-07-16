@@ -1,5 +1,5 @@
 %% @doc Handler for package and location services.
--module(login_request_h).
+-module(name_request_h).
 
 -export([init/2]).
 
@@ -8,8 +8,8 @@
 
 init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
-	#{<<"username">> := Username,<<"password">> := Password} = jsx:decode(Data),
-	Result = erpc:call(?SERVER,?LOGIC,request_login_api,[{binary_to_list(Username),binary_to_list(Password)}]),
+	#{<<"user_id">> := User_id} = jsx:decode(Data),
+	Result = erpc:call(?SERVER,?LOGIC,request_name_api,[{binary_to_list(User_id)}]),
 
 	if
 		is_list(Result)->
@@ -28,5 +28,4 @@ init(Req0,Opts) ->
 			},list_to_binary("Invalid"),Req0),
 			{ok,Response,Opts}
 	end.
-
 

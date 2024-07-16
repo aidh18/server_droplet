@@ -1,5 +1,5 @@
 %% @doc Handler for package and location services.
--module(login_update_h).
+-module(name_update_h).
 
 -export([init/2]).
 
@@ -8,11 +8,19 @@
 
 init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
-	#{<<"user_id">> := User_id,<<"username">> := Username,<<"password">> := New_password} = jsx:decode(Data),
-	Result = erpc:cast(?SERVER,?LOGIC,update_login_api,[{binary_to_list(User_id),binary_to_list(Username),binary_to_list(New_password)}]),
+	#{<<"user_id">> := User_id,<<"name">> := Name} = jsx:decode(Data),
+	Result = erpc:cast(?SERVER,?LOGIC,update_name_api,[{binary_to_list(User_id),binary_to_list(Name)}]),
 
 	Encoded_message = jsx:encode(Result),
 	Response = cowboy_req:reply(200,#{
 		<<"content-type">> => <<"text/json">>
 	},Encoded_message,Req0),
 	{ok,Response,Opts}.
+
+
+
+
+
+
+
+    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
