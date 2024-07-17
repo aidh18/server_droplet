@@ -10,7 +10,6 @@ init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"user_id">> := User_id} = jsx:decode(Data),
 	Result = erpc:call(?SERVER,?LOGIC,request_settings_api,[binary_to_term(User_id)]),
-	io:format(Result),
 
 	if
 		is_list(Result) orelse is_map(Result)->
