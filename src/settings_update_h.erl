@@ -9,7 +9,7 @@
 init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"user_id">> := User_id,<<"setting_type">> := Setting_type,<<"setting">> := Setting} = jsx:decode(Data),
-	Result = erpc:cast(?SERVER,?LOGIC,update_settings,[binary_to_term(User_id),binary_to_term(Setting_type),term_to_binary(Setting)]),
+	Result = erpc:cast(?SERVER,?LOGIC,update_settings,[binary_to_list(User_id),binary_to_list(Setting_type),binary_to_list(Setting)]),
 
 	Encoded_message = jsx:encode(Result),
 	Response = cowboy_req:reply(200,#{

@@ -15,17 +15,17 @@ init(Req0,Opts) ->
 		is_list(Result)->
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
-			},term_to_binary(Result),Req0),
+			},list_to_binary(Result),Req0),
 			{ok,Response,Opts};
 		Result =:= 500->
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
-			},term_to_binary("500"),Req0),
+			},list_to_binary("500"),Req0),
 			{ok,Response,Opts};
 		true->
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
-			},term_to_binary("Invalid"),Req0),
+			},list_to_binary("Invalid"),Req0),
 			{ok,Response,Opts}
 	end.
 
