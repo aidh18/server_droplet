@@ -9,7 +9,7 @@
 init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"user_id">> := User_id,<<"date">> := Date,<<"hours">> := Hours} = jsx:decode(Data),
-	Result = erpc:cast(?SERVER,?LOGIC,update_hours_api,[binary_to_list(User_id),binary_to_list(Date),binary_to_term(Hours)]),
+	Result = erpc:cast(?SERVER,?LOGIC,update_hours_api,[binary_to_list(User_id),binary_to_list(Date),Hours]),
 
 	Encoded_message = jsx:encode(Result),
 	Response = cowboy_req:reply(200,#{
