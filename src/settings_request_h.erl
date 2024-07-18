@@ -13,10 +13,9 @@ init(Req0,Opts) ->
 
 	if
 		is_list(Result) orelse is_map(Result)->
-			Encoded_message = jsx:encode(Result),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
-			},Encoded_message,Req0),
+			},term_to_binary(Result),Req0),
 			{ok,Response,Opts};
 		Result =:= 500->
 			Response = cowboy_req:reply(200,#{
