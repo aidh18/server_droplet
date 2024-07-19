@@ -1,7 +1,7 @@
 %% @doc Handler for package and location services.
 -module(hours_request_h).
 
--export([init/2,create_map/2,is_employer/1,format_result/2,print/1]).
+-export([init/2,create_map/2,is_employer/1,format_result/2]).
 
 -define(SERVER,'logic@logic.aidanstacey.com').
 -define(LOGIC,logic).
@@ -10,7 +10,6 @@ init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"is_employer">> := Employer,<<"user_id">> := User_id} = jsx:decode(Data),
 	Is_employer = is_employer(Employer),
-	print(Is_employer),
 	Result = erpc:call(?SERVER,?LOGIC,request_hours_api,[Is_employer,binary_to_list(User_id)]),
 
 	if
@@ -34,9 +33,10 @@ init(Req0,Opts) ->
 
 format_result(Result,true)->
 	Result_map = create_map(Result,#{}),
-	map_to_string:format_map(maps:to_list(Result_map));
+	map_to_string:format_map(Result_map);
 format_result(Result, false)->
-	map_to_string:format_simple_map(Result).
+	Result_map = create_map(Result,#{}),
+	map_to_string:format_simple_map(Result_map).
 
 
 create_map(Result,_) when is_map(Result)->
@@ -52,12 +52,4 @@ is_employer(Employer)->
 		1-> true;
 		0-> false;
 		_-> false
-	end.
-
-print(Is_employer)->
-	if
-		Is_employer->
-			io:format("\n\n\n\n\nTRUE\n\n\n\n");
-		true->
-			io:format("\n\n\n\n\nFALSE\n\n\n\n")
 	end.
