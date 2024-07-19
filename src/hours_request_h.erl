@@ -33,10 +33,10 @@ init(Req0,Opts) ->
 
 format_result(Result,true)->
 	Result_map = create_map(Result,#{}),
-	map_to_string:format_map(Result_map);
+	map_to_string:format(Result_map);
 format_result(Result,false)->
 	Result_map = create_map(Result,#{}),
-	map_to_string:format_simple_map(Result_map).
+	map_to_string:format(Result_map).
 
 create_map(Result,_) when is_map(Result)->
 	Result;

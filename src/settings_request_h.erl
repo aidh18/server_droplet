@@ -13,7 +13,7 @@ init(Req0,Opts) ->
 
 	if
 		is_list(Result) orelse is_map(Result)->
-			Formatted_result = map_to_string:format_simple_map(Result),
+			Formatted_result = map_to_string:format(Result),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
 			},term_to_binary(Formatted_result),Req0),
