@@ -1,7 +1,7 @@
 %% @doc Handler for package and location services.
 -module(hours_request_h).
 
--export([init/2,create_map/2,is_employer/1,format_result/2]).
+-export([init/2,create_map/2,is_employer/1,format_result/2,print/1]).
 
 -define(SERVER,'logic@logic.aidanstacey.com').
 -define(LOGIC,logic).
@@ -10,6 +10,8 @@ init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"is_employer">> := Employer,<<"user_id">> := User_id} = jsx:decode(Data),
 	Is_employer = is_employer(Employer),
+	io:format(Employer),
+	print(Is_employer),
 	Result = erpc:call(?SERVER,?LOGIC,request_hours_api,[Is_employer,binary_to_list(User_id)]),
 
 	if
@@ -51,4 +53,12 @@ is_employer(Employer)->
 		"true"-> true;
 		"false"-> false;
 		_-> false
+	end.
+
+print(Is_employer)->
+	if
+		Is_employer->
+			io:format("\n\n\n\n\nTRUE\n\n\n\n");
+		true->
+			io:format("\n\n\n\n\nFALSE\n\n\n\n")
 	end.
