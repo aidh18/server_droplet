@@ -1,5 +1,5 @@
 -module(map_to_string).
--export([format_map/1,format_inner_map/1]).
+-export([format_map/1,format_inner_map/1,format_simple_map/1]).
 
 
 format_map(Map) ->
@@ -17,4 +17,12 @@ format_inner_map(InnerMap) ->
                                   Acc ++ [InnerString]
                               end, [], InnerMap),
     string:join(InnerPairs, "+").
+
+format_simple_map(Map) ->
+    Pairs = maps:fold(fun(Key, Value, Acc) ->
+                                String = io_lib:format("\"~s\"!\"~s\"", [Key, Value]),
+                                Acc ++ [String]
+                            end, [], Map),
+    ResultString = string:join(Pairs, "|"),
+    lists:flatten(ResultString).
 

@@ -1,7 +1,7 @@
 %% @doc Handler for package and location services.
 -module(hours_request_h).
 
--export([init/2,create_map/2,is_employer/1]).
+-export([init/2,create_map/2,is_employer/1,format_result/2]).
 
 -define(SERVER,'logic@logic.aidanstacey.com').
 -define(LOGIC,logic).
@@ -14,11 +14,10 @@ init(Req0,Opts) ->
 
 	if
 		is_list(Result) orelse is_map(Result)->
-			Result_map = create_map(Result,#{}),
-			Result_string = map_to_string:format_map(maps:to_list(Result_map)),
+			Formatted_result = format_result(Result, Is_employer),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
-			},list_to_binary(Result_string),Req0),
+			},list_to_binary(Formatted_result),Req0),
 			{ok,Response,Opts};
 		Result =:= 500->
 			Response = cowboy_req:reply(200,#{
@@ -31,6 +30,13 @@ init(Req0,Opts) ->
 			},list_to_binary(Result),Req0),
 			{ok,Response,Opts}
 	end.
+
+format_result(Result,true)->
+	Result_map = create_map(Result,#{}),
+	map_to_string:format_map(maps:to_list(Result_map));
+format_result(Result, false)->
+	map_to_string:format_simple_map(Result).
+
 
 create_map(Result,_) when is_map(Result)->
 	Result;
