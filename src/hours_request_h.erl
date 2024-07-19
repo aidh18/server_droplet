@@ -14,7 +14,7 @@ init(Req0,Opts) ->
 
 	if
 		is_list(Result) orelse is_map(Result)->
-			Formatted_result = format_result(Result, Is_employer),
+			Formatted_result = format_result(Result,Is_employer),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
 			},list_to_binary(Formatted_result),Req0),
@@ -34,18 +34,20 @@ init(Req0,Opts) ->
 format_result(Result,true)->
 	Result_map = create_map(Result,#{}),
 	map_to_string:format_map(Result_map);
-format_result(Result, false)->
+format_result(Result,false)->
 	Result_map = create_map(Result,#{}),
 	map_to_string:format_simple_map(Result_map).
-
 
 create_map(Result,_) when is_map(Result)->
 	Result;
 create_map([],Map)->
 	Map;
-create_map([[Employee_id, Hours] | Rest], Map)->
-	New_map = maps:put(Employee_id, Hours, Map),
-	create_map(Rest, New_map).
+create_map([[Employee_id,Hours] | Rest],Map)->
+	New_map = maps:put(Employee_id,Hours,Map),
+	create_map(Rest,New_map);
+create_map(Single,Map)->
+	[Employee_id,Hours] = Single,
+	maps:put(Employee_id,Hours,Map).
 
 is_employer(Employer)->
 	case Employer of
