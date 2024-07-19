@@ -10,11 +10,11 @@ init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"is_employer">> := Employer,<<"user_id">> := User_id} = jsx:decode(Data),
 	Is_employer = is_employer(Employer),
-	Result = erpc:call(?SERVER,?LOGIC,request_hours_api,[Is_employer,binary_to_list(User_id)]),
+	Result = erpc:call(?SERVER,?LOGIC,request_hours_api,[Employer,binary_to_list(User_id)]),
 
 	if
 		is_list(Result) orelse is_map(Result)->
-			Formatted_result = format_result(Result,Is_employer),
+			Formatted_result = format_result(Result,Employer),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
 			},list_to_binary(Formatted_result),Req0),
