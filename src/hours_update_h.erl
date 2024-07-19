@@ -1,7 +1,7 @@
 %% @doc Handler for package and location services.
 -module(hours_update_h).
 
--export([init/2]).
+-export([init/2,create_json/2]).
 
 -define(SERVER,'logic@logic.aidanstacey.com').
 -define(LOGIC,logic).
@@ -16,3 +16,9 @@ init(Req0,Opts) ->
 		<<"content-type">> => <<"text/json">>
 	},Encoded_message,Req0),
 	{ok,Response,Opts}.
+
+create_json([],Json)->
+	Json;
+create_json([[Employee_id, Hours] | Rest], Json)->
+	New_json = maps:put(Employee_id, Hours, Json),
+    create_json(Rest, New_json).
