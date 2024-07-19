@@ -10,7 +10,6 @@ init(Req0,Opts) ->
 	{ok,Data,_} = cowboy_req:read_body(Req0),
 	#{<<"is_employer">> := Employer,<<"user_id">> := User_id} = jsx:decode(Data),
 	Is_employer = is_employer(Employer),
-	io:format(Employer),
 	print(Is_employer),
 	Result = erpc:call(?SERVER,?LOGIC,request_hours_api,[Is_employer,binary_to_list(User_id)]),
 
