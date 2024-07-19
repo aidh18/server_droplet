@@ -50,8 +50,8 @@ create_map([[Employee_id, Hours] | Rest], Map)->
 
 is_employer(Employer)->
 	case Employer of
-		"true"-> true;
-		"false"-> false;
+		1-> true;
+		0-> false;
 		_-> false
 	end.
 
