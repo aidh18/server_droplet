@@ -13,7 +13,7 @@ format(Start)->
     Six = replace_char(Five,$",$!),
     Seven = replace_char(Six,125,$,),
     Eight = replace_char(Seven,$>,$'),
-    Eight.
+    filter_char(Eight,$\n).
 
 
 replace_char(String, Replace, New) ->
