@@ -5,6 +5,9 @@
 
 format(Start)->
     Zero = lists:flatten(io_lib:format("~p",[Start])),
+    io:format("\n\n\n\nGetting item:"),
+    io:format(Zero),
+    io:format("\n\n\n\n"),
     One = filter_char(Zero,$\s),
     Two = filter_char(One,$=),
     Three = filter_char(Two,$#),
