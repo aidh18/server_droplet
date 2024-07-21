@@ -16,7 +16,7 @@ init(Req0,Opts) ->
 			Formatted_result = map_to_string:format(Result),
 			Response = cowboy_req:reply(200,#{
 				<<"content-type">> => <<"text/json">>
-			},term_to_binary(Formatted_result),Req0),
+			},list_to_binary(Formatted_result),Req0),
 			{ok,Response,Opts};
 		Result =:= 500->
 			Response = cowboy_req:reply(200,#{
